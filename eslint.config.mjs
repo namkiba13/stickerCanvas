@@ -4,7 +4,7 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 
 export default defineConfig([
-  globalIgnores(["dist/**", "node_modules/**", ".github/**", "build/**", "public/**"]),
+  globalIgnores(["dist/**", "dist-site/**", "node_modules/**", ".github/**", "build/**", "public/**"]),
   ...tseslint.configs.recommended,
   {
     files: ["app/**/*.{ts,tsx}", "lib/**/*.ts", "workers/**/*.ts"],
