@@ -1,4 +1,37 @@
-import { readAmount, countText } from "./logic.mjs";
+import { readAmount, countText, searchKey } from "./logic.mjs";
+
+const finder = document.querySelector("#finder");
+if (finder) {
+  const cards = [...document.querySelectorAll("#tool-grid .card")];
+  const field = document.querySelector("#tool-search");
+  const filters = [...document.querySelectorAll("[data-filter]")];
+  let category = "";
+  const filter = () => {
+    const words = searchKey(field.value).split(/\s+/).filter(Boolean);
+    let shown = 0;
+    for (const card of cards) {
+      const key = searchKey(`${card.textContent} ${card.dataset.keywords}`);
+      card.hidden = !((!category || card.dataset.category === category) && words.every((word) => key.includes(word)));
+      if (!card.hidden) shown++;
+    }
+    document.querySelector("#tool-empty").hidden = shown > 0;
+    document.querySelector("#tool-count").textContent = `${shown} công cụ`;
+  };
+  finder.hidden = false;
+  document.querySelector("#filters").hidden = false;
+  field.addEventListener("input", filter);
+  finder.addEventListener("submit", (event) => {
+    event.preventDefault();
+    cards.find((card) => !card.hidden)?.click();
+  });
+  for (const button of filters) {
+    button.addEventListener("click", () => {
+      category = button.dataset.filter;
+      for (const other of filters) other.setAttribute("aria-pressed", String(other === button));
+      filter();
+    });
+  }
+}
 
 const input = document.querySelector("#input");
 const status = document.querySelector("#status");

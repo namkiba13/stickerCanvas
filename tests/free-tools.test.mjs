@@ -1,6 +1,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { readAmount, countText } from "../site/logic.mjs";
+import { readAmount, countText, searchKey } from "../site/logic.mjs";
+
+test("search keys ignore Vietnamese accents and case", () => {
+  assert.equal(searchKey("Đếm TỪ & ký tự"), "dem tu & ky tu");
+  assert.ok(searchKey("Xóa nền ảnh").includes(searchKey("xoa nen")));
+});
 
 test("Vietnamese amounts retain precision, validate grouping, and respect the selected locale", () => {
   assert.equal(readAmount("1.250.000"), "Một triệu hai trăm năm mươi nghìn đồng");

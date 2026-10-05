@@ -39,6 +39,7 @@ native Unicode APIs rather than its original ASCII/UTF-16 assumptions.
 - Build pack: Dockerfile; port 80; health check `/`.
 - `SITE_URL` is a build-time variable, used for canonical URLs and sitemap.
 - Deployments are triggered manually through Coolify.
+- Blog posts live in `content/blog/<slug>.html`: front matter between `---` lines (`title`, `description`, `date` as YYYY-MM-DD, optional `updated` and `tool` such as `/doi-so-thanh-chu/`), then the HTML body starting at `<h2>`. The build adds the post to `/blog/`, the homepage, the matching tool page, and the sitemap.
 
 When moving domains, update the application domain and `SITE_URL`, rebuild,
 and configure permanent redirects from the old URLs. Keep the same tool paths.

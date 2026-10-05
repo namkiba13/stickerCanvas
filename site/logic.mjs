@@ -17,6 +17,9 @@ export function readAmount(input, format = "vn", unit = "đồng") {
   return result.charAt(0).toUpperCase() + result.slice(1);
 }
 
+// Accent-insensitive key so "dem tu" finds "Đếm từ".
+export const searchKey = (text) => text.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase().replaceAll("đ", "d");
+
 export function countText(text) {
   const graphemes = new Intl.Segmenter("vi", { granularity: "grapheme" }).segment(text);
   let characters = 0;
