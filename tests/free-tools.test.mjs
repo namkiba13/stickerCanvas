@@ -1,6 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { readAmount, countText, searchKey } from "../site/logic.mjs";
+import { readAmount, readLines, countText, searchKey } from "../site/logic.mjs";
+
+test("multi-line input keeps blank lines and reports bad lines", () => {
+  assert.deepEqual(readLines("15005\n\nabc", "vn", ""), { value: "Mười lăm nghìn không trăm lẻ năm\n\nDòng 3: Số hoặc dấu phân cách chưa đúng định dạng đã chọn.", errors: 1 });
+});
 
 test("search keys ignore Vietnamese accents and case", () => {
   assert.equal(searchKey("Đếm TỪ & ký tự"), "dem tu & ky tu");

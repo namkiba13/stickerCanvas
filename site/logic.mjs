@@ -17,6 +17,21 @@ export function readAmount(input, format = "vn", unit = "đồng") {
   return result.charAt(0).toUpperCase() + result.slice(1);
 }
 
+// One number per line; blank lines stay blank so the column can be pasted back into Excel.
+export function readLines(text, format, unit) {
+  let errors = 0;
+  const value = text.split(/\r\n|\r|\n/).map((line, index) => {
+    if (!line.trim()) return "";
+    try {
+      return readAmount(line, format, unit);
+    } catch (error) {
+      errors++;
+      return `Dòng ${index + 1}: ${error.message}`;
+    }
+  }).join("\n");
+  return { value, errors };
+}
+
 // Accent-insensitive key so "dem tu" finds "Đếm từ".
 export const searchKey = (text) => text.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase().replaceAll("đ", "d");
 

@@ -1,36 +1,73 @@
-import { readAmount, countText, searchKey } from "./logic.mjs";
+import { countText, readLines, searchKey } from "./logic.mjs";
 
-const finder = document.querySelector("#finder");
-if (finder) {
-  const cards = [...document.querySelectorAll("#tool-grid .card")];
-  const field = document.querySelector("#tool-search");
-  const filters = [...document.querySelectorAll("[data-filter]")];
-  let category = "";
-  const filter = () => {
-    const words = searchKey(field.value).split(/\s+/).filter(Boolean);
-    let shown = 0;
-    for (const card of cards) {
-      const key = searchKey(`${card.textContent} ${card.dataset.keywords}`);
-      card.hidden = !((!category || card.dataset.category === category) && words.every((word) => key.includes(word)));
-      if (!card.hidden) shown++;
+const matches = (element, words) => {
+  const key = searchKey(`${element.textContent} ${element.dataset.keywords ?? ""}`);
+  return words.every((word) => key.includes(word));
+};
+const wordsOf = (value) => searchKey(value).split(/\s+/).filter(Boolean);
+
+// Hero search: ARIA combobox with grouped listbox (WAI-ARIA APG pattern).
+const field = document.querySelector("#tool-search");
+if (field) {
+  const list = document.querySelector("#tool-list");
+  const options = [...list.querySelectorAll('[role="option"]')];
+  let active = -1;
+  const visible = () => options.filter((option) => !option.hidden);
+  const setActive = (index) => {
+    const shown = visible();
+    active = shown.length ? (index + shown.length) % shown.length : -1;
+    options.forEach((option) => option.setAttribute("aria-selected", "false"));
+    const option = shown[active];
+    if (option) {
+      option.setAttribute("aria-selected", "true");
+      option.scrollIntoView({ block: "nearest" });
     }
-    document.querySelector("#tool-empty").hidden = shown > 0;
-    document.querySelector("#tool-count").textContent = `${shown} công cụ`;
+    field.setAttribute("aria-activedescendant", option?.id ?? "");
   };
-  finder.hidden = false;
-  document.querySelector("#filters").hidden = false;
+  const open = (show) => {
+    list.hidden = !show;
+    field.setAttribute("aria-expanded", String(show));
+    if (!show) setActive(-1);
+  };
+  const filter = () => {
+    const words = wordsOf(field.value);
+    for (const option of options) option.hidden = !matches(option, words);
+    for (const group of list.querySelectorAll('[role="group"]')) group.hidden = !group.querySelector('[role="option"]:not([hidden])');
+    list.querySelector(".none").hidden = visible().length > 0;
+    setActive(-1);
+    open(true);
+  };
+  // Keep focus in the field so blur does not close the list before an option click lands.
+  list.addEventListener("mousedown", (event) => event.preventDefault());
   field.addEventListener("input", filter);
-  finder.addEventListener("submit", (event) => {
-    event.preventDefault();
-    cards.find((card) => !card.hidden)?.click();
+  field.addEventListener("focus", filter);
+  field.addEventListener("blur", () => setTimeout(() => open(false), 150));
+  field.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault();
+      if (list.hidden) filter();
+      setActive(active + (event.key === "ArrowDown" ? 1 : -1));
+    } else if (event.key === "Enter") {
+      const option = visible()[Math.max(active, 0)];
+      if (option && !list.hidden) {
+        event.preventDefault();
+        option.click();
+      }
+    } else if (event.key === "Escape") {
+      open(false);
+    }
   });
-  for (const button of filters) {
-    button.addEventListener("click", () => {
-      category = button.dataset.filter;
-      for (const other of filters) other.setAttribute("aria-pressed", String(other === button));
-      filter();
-    });
-  }
+}
+
+// Category page: filter tool tiles in place.
+const categorySearch = document.querySelector("#category-search");
+if (categorySearch) {
+  const tiles = [...document.querySelectorAll(".tile-grid .tool-tile")];
+  categorySearch.addEventListener("input", () => {
+    const words = wordsOf(categorySearch.value);
+    for (const tile of tiles) tile.hidden = !matches(tile, words);
+    document.querySelector("#tile-empty").hidden = tiles.some((tile) => !tile.hidden);
+  });
 }
 
 const input = document.querySelector("#input");
@@ -38,23 +75,17 @@ const status = document.querySelector("#status");
 const result = document.querySelector("#result");
 const copy = document.querySelector("#copy");
 const mode = document.body.dataset.tool;
+const option = (name) => document.querySelector(`input[name="${name}"]:checked`)?.value ?? "";
 
 function update() {
   status.textContent = "";
   if (mode === "number") {
-    let errors = 0;
-    result.value = input.value.split(/\r\n|\r|\n/).map((line, index) => {
-      if (!line.trim()) return "";
-      try {
-        return readAmount(line, document.querySelector("#format").value, document.querySelector("#unit").value);
-      } catch (error) {
-        errors++;
-        return `Dòng ${index + 1}: ${error.message}`;
-      }
-    }).join("\n");
+    const { value, errors } = readLines(input.value, option("format"), option("unit"));
+    result.value = value;
     input.setAttribute("aria-invalid", String(errors > 0));
-    status.textContent = errors ? `${errors} dòng cần sửa. Kiểm tra định dạng số bên dưới.` : "";
-    copy.disabled = errors > 0 || !result.value.trim();
+    status.textContent = errors ? `${errors} dòng cần sửa. Kiểm tra định dạng số trong phần Tùy chọn công cụ.` : "";
+    copy.disabled = errors > 0 || !value.trim();
+    document.querySelector("#download").disabled = copy.disabled;
   } else {
     if (typeof Intl.Segmenter !== "function") {
       status.textContent = "Vui lòng cập nhật trình duyệt để đếm ký tự Unicode và emoji chính xác.";
@@ -69,17 +100,28 @@ function update() {
 }
 
 if (input) {
+  const file = document.querySelector("#file");
   input.addEventListener("input", update);
-  document.querySelectorAll("select").forEach((select) => select.addEventListener("change", update));
-  document.querySelector("#example").addEventListener("click", () => {
-    input.value = mode === "number" ? "1250000\n15005\n0" : "Xin chào Việt Nam! 👋\nCông cụ nhỏ, giúp việc mỗi ngày nhẹ hơn.";
-    update();
-    input.focus();
-  });
+  document.querySelectorAll('.options input[type="radio"]').forEach((radio) => radio.addEventListener("change", update));
   document.querySelector("#clear").addEventListener("click", () => {
     input.value = "";
     update();
     input.focus();
+  });
+  document.querySelector("#import").addEventListener("click", () => file.click());
+  file.addEventListener("change", async () => {
+    const [chosen] = file.files;
+    if (!chosen) return;
+    input.value = (await chosen.text()).slice(0, input.maxLength);
+    file.value = "";
+    update();
+  });
+  document.querySelector("#download")?.addEventListener("click", () => {
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(new Blob([result.value], { type: "text/plain;charset=utf-8" }));
+    link.download = "so-thanh-chu.txt";
+    link.click();
+    URL.revokeObjectURL(link.href);
   });
   copy.addEventListener("click", async () => {
     const source = result ?? input;
@@ -92,5 +134,24 @@ if (input) {
       status.textContent = "Đã chọn nội dung. Nhấn Ctrl+C hoặc chọn Sao chép trên điện thoại.";
     }
   });
+  for (const card of document.querySelectorAll(".ex-card")) {
+    const tryExample = () => {
+      input.value = card.dataset.input;
+      for (const name of ["format", "unit"]) {
+        const radio = document.querySelector(`input[name="${name}"][value="${card.dataset[name]}"]`);
+        if (radio && name in card.dataset) radio.checked = true;
+      }
+      update();
+      document.querySelector("#tool").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+      input.focus({ preventScroll: true });
+    };
+    card.addEventListener("click", tryExample);
+    card.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        tryExample();
+      }
+    });
+  }
   update();
 }
