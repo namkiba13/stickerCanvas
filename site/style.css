@@ -6,7 +6,7 @@ body { margin:0; font-size:16px; line-height:1.5; letter-spacing:.00938em; backg
 body.home-bg { background:var(--bg) url("/assets/background.svg"); }
 a { color:var(--link); text-decoration:none; }
 a:hover { color:#030362; }
-button,input,textarea { font:inherit; letter-spacing:inherit; color:inherit; }
+button,input,textarea,select { font:inherit; letter-spacing:inherit; color:inherit; }
 :focus-visible { outline:2px solid var(--primary); outline-offset:2px; }
 [hidden] { display:none!important; }
 .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
@@ -22,6 +22,10 @@ svg { flex:none; }
 .topbar nav { display:flex; align-items:center; gap:24px; }
 .topbar nav > a:not(.btn) { color:var(--ink); }
 .topbar nav > a:not(.btn):hover,.topbar nav > a[aria-current] { color:var(--link); }
+.lang { display:inline-flex; align-items:center; gap:4px; color:var(--ink); }
+.lang svg { width:22px; height:22px; }
+.lang select { max-width:130px; padding:4px 2px; border:0; border-radius:4px; background:none; cursor:pointer; }
+.lang select:hover { background:rgba(0,0,0,.04); }
 
 /* Buttons and chips */
 .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:36.5px; padding:6px 16px; border-radius:4px; border:1px solid transparent; font-size:14px; font-weight:500; line-height:1.75; letter-spacing:.02857em; cursor:pointer; background:none; color:var(--primary); text-align:center; transition:background .25s,box-shadow .25s; }
@@ -33,7 +37,6 @@ svg { flex:none; }
 .btn.paper { background:var(--bg); }
 .btn.text { padding:6px 8px; }
 .btn.text:hover { background:rgba(25,118,210,.04); }
-.btn.pill { border-radius:100px; }
 .btn:disabled { color:rgba(0,0,0,.26); cursor:default; background:none; }
 .chip { display:inline-flex; align-items:center; height:24px; padding:0 8px; border-radius:16px; background:rgba(0,0,0,.08); font-size:13px; color:var(--ink); align-self:flex-start; }
 .small { font-size:14px; color:var(--muted); }
@@ -191,7 +194,7 @@ footer a { color:var(--muted); }
 @media (max-width:1199px) { .hero { width:80%; } .topbar { margin-inline:24px; } }
 @media (max-width:899px) {
   .topbar { margin:8px 0 0; padding:0 16px; flex-wrap:wrap; }
-  .topbar nav { gap:16px; font-size:14px; }
+  .topbar nav { flex-wrap:wrap; gap:4px 16px; font-size:14px; }
   .home,.hero-wrap { padding:16px 8px; }
   .hero,.categories,.home-posts { width:100%; }
   .categories,.io,.post-layout { grid-template-columns:1fr; }

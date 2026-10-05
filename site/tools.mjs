@@ -75,25 +75,26 @@ const status = document.querySelector("#status");
 const result = document.querySelector("#result");
 const copy = document.querySelector("#copy");
 const mode = document.body.dataset.tool;
+const t = JSON.parse(document.querySelector("#i18n")?.textContent ?? "{}");
 const option = (name) => document.querySelector(`input[name="${name}"]:checked`)?.value ?? "";
 
 function update() {
   status.textContent = "";
   if (mode === "number") {
-    const { value, errors } = readLines(input.value, option("format"), option("unit"));
+    const { value, errors } = readLines(input.value, option("format"), option("unit"), t);
     result.value = value;
     input.setAttribute("aria-invalid", String(errors > 0));
-    status.textContent = errors ? `${errors} dòng cần sửa. Kiểm tra định dạng số trong phần Tùy chọn công cụ.` : "";
+    status.textContent = errors ? t.errors.replace("{n}", errors) : "";
     copy.disabled = errors > 0 || !value.trim();
     document.querySelector("#download").disabled = copy.disabled;
   } else {
     if (typeof Intl.Segmenter !== "function") {
-      status.textContent = "Vui lòng cập nhật trình duyệt để đếm ký tự Unicode và emoji chính xác.";
+      status.textContent = t.segmenter;
       copy.disabled = true;
       return;
     }
     for (const [key, value] of Object.entries(countText(input.value))) {
-      document.querySelector(`[data-count="${key}"]`).textContent = value.toLocaleString("vi-VN");
+      document.querySelector(`[data-count="${key}"]`).textContent = value.toLocaleString(document.documentElement.lang);
     }
     copy.disabled = !input.value;
   }
@@ -119,7 +120,7 @@ if (input) {
   document.querySelector("#download")?.addEventListener("click", () => {
     const link = document.createElement("a");
     link.href = URL.createObjectURL(new Blob([result.value], { type: "text/plain;charset=utf-8" }));
-    link.download = "so-thanh-chu.txt";
+    link.download = t.file;
     link.click();
     URL.revokeObjectURL(link.href);
   });
@@ -127,11 +128,11 @@ if (input) {
     const source = result ?? input;
     try {
       await navigator.clipboard.writeText(source.value);
-      status.textContent = "Đã sao chép.";
+      status.textContent = t.copied;
     } catch {
       source.focus();
       source.select();
-      status.textContent = "Đã chọn nội dung. Nhấn Ctrl+C hoặc chọn Sao chép trên điện thoại.";
+      status.textContent = t.selected;
     }
   });
   for (const card of document.querySelectorAll(".ex-card")) {

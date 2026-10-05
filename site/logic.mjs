@@ -6,8 +6,8 @@ export function readAmount(input, format = "vn", unit = "đồng") {
   const pattern = format === "vn"
     ? /^-?(?:\d+|\d{1,3}(?:\.\d{3})+)(?:,\d+)?$/
     : /^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/;
-  if (!pattern.test(value)) throw new Error("Số hoặc dấu phân cách chưa đúng định dạng đã chọn.");
-  if (value.length > 300) throw new Error("Mỗi số tối đa 300 ký tự.");
+  if (!pattern.test(value)) throw Object.assign(new Error("Số hoặc dấu phân cách chưa đúng định dạng đã chọn."), { code: "format" });
+  if (value.length > 300) throw Object.assign(new Error("Mỗi số tối đa 300 ký tự."), { code: "length" });
   const config = new ReadingConfig();
   // Normalize validated input; the upstream thousands separator is a regex.
   const normalized = format === "vn" ? value.replaceAll(".", "").replace(",", ".") : value.replaceAll(",", "");
@@ -18,7 +18,8 @@ export function readAmount(input, format = "vn", unit = "đồng") {
 }
 
 // One number per line; blank lines stay blank so the column can be pasted back into Excel.
-export function readLines(text, format, unit) {
+// t: optional localized { line, format, length } messages; output stays Vietnamese.
+export function readLines(text, format, unit, t = {}) {
   let errors = 0;
   const value = text.split(/\r\n|\r|\n/).map((line, index) => {
     if (!line.trim()) return "";
@@ -26,7 +27,7 @@ export function readLines(text, format, unit) {
       return readAmount(line, format, unit);
     } catch (error) {
       errors++;
-      return `Dòng ${index + 1}: ${error.message}`;
+      return `${t.line ?? "Dòng"} ${index + 1}: ${t[error.code] ?? error.message}`;
     }
   }).join("\n");
   return { value, errors };

@@ -1,0 +1,76 @@
+export default {
+  label: "Español", htmlLang: "es", ogLocale: "es_ES",
+  site: { title: "94 Tools — Herramientas online gratis, listas para usar", description: "Convierte números a palabras en vietnamita, cuenta palabras y caracteres, crea stickers con tus fotos. Gratis, sin cuenta y procesado en tu navegador.", tagline: "Utilidades para cada día, gratis." },
+  ui: {
+    skip: "Ir al contenido principal", menu: "Menú principal", language: "Idioma", home: "Inicio", allTools: "Todas las herramientas", tools: "Herramientas", blog: "Blog (vietnamita)", about: "Acerca de", aboutFooter: "Acerca de · Privacidad · Código fuente",
+    heroTitle: (b) => `Haz las cosas rápido con ${b}`, heroDesc: "Aumenta tu productividad con 94 Tools: herramientas online gratuitas para terminar tus tareas en un momento. Convierte números a palabras, cuenta palabras, crea stickers con fotos y más, todo en tu navegador.",
+    search: "Buscar herramientas", searchPlaceholder: "Buscar en todas las herramientas", noResults: "Sin resultados", categories: "Categorías de herramientas",
+    seeAll: (c) => `Ver todas las ${c.toLowerCase()}`, tryTool: (t) => `Probar ${t}`, allOf: (c) => `Todas las ${c.toLowerCase()}`, searchIn: (c) => `Buscar en ${c.toLowerCase()}`, back: "Volver al inicio", categoryTitle: (c) => `${c} online gratis`,
+    seeExamples: "Ver ejemplos", options: "Opciones de la herramienta", whatIs: (t) => `¿Qué es ${t}?`, examples: (t) => `Ejemplos: ${t}`, clickToTry: "¡Haz clic para probar!", tryExample: "Probar ejemplo", moreTools: "Más herramientas para ti",
+    import: "Importar archivo", clear: "Borrar", download: "Descargar", copy: "Copiar",
+  },
+  quick: ["Importe en vietnamita", "Contar palabras", "Crear un sticker", "Convertir columna de Excel", "Contar caracteres", "Quitar fondo de imagen"],
+  categories: [
+    { name: "Herramientas numéricas", description: "Herramientas para trabajar con números: convierte importes a palabras en vietnamita y lee columnas enteras de Excel para facturas, recibos, contratos y más." },
+    { name: "Herramientas de texto", description: "Herramientas para trabajar con texto: cuenta palabras, caracteres con y sin espacios y líneas en artículos, tareas, descripciones de productos y más." },
+    { name: "Herramientas de imagen", description: "Herramientas para trabajar con imágenes: quita el fondo, añade contornos y texto y crea stickers PNG en tu navegador, sin instalar nada." },
+  ],
+  tools: [
+    {
+      name: "Números a palabras en vietnamita", short: "Escribe importes en letras en vietnamita", keywords: "numero a letras vietnamita importe dong factura excel",
+      description: "Escribe importes en letras en vietnamita. Pega una columna de Excel y copia todos los resultados de una vez.",
+      title: "Convertir números a palabras en vietnamita — Pega columnas de Excel", meta: "Convertidor gratuito que escribe números en palabras en vietnamita. Admite importes en đồng, negativos, decimales y varias líneas de Excel; mantiene exactos los números grandes.",
+      info: "El convertidor de números a palabras en vietnamita transforma un número, como el importe de una factura, recibo o contrato, en su forma escrita en vietnamita. Escribe un número o pega una columna de Excel, elige el formato de separadores y la unidad, y copia o descarga el resultado. La salida siempre está en vietnamita.",
+      prose: `<h2>Cómo convertir números a palabras en vietnamita</h2><ol><li>Elige el formato vietnamita o internacional según tus datos.</li><li>Escribe un número o pega una columna de números de Excel en el cuadro izquierdo.</li><li>Revisa el resultado, pulsa <strong>Copiar</strong> debajo y pégalo en tu hoja de cálculo o documento.</li></ol><p>Por ejemplo, <code>1.250.000</code> en formato vietnamita se lee <strong>một triệu hai trăm năm mươi nghìn đồng</strong> (un millón doscientos cincuenta mil đồng). Si solo necesitas el número, elige «Sin unidad».</p><h2>¿Cómo se interpretan el punto y la coma?</h2><p>En formato vietnamita, el punto separa los miles y la coma marca los decimales: <code>1.234,5</code>. El formato internacional los invierte: <code>1,234.5</code>. Los grupos de miles deben tener exactamente tres cifras; la herramienta no adivina entradas mal escritas.</p><h2>Preguntas frecuentes</h2><details><summary>¿Admite números grandes y negativos?</summary><p>Sí. La entrada se conserva como texto, así que no se pierden cifras en el límite de enteros de JavaScript. Los negativos se leen con el prefijo «âm».</p></details><details><summary>¿Cómo se lee la parte decimal?</summary><p>La parte decimal se lee tras la palabra «phẩy», seguida de la unidad elegida. La herramienta no convierte fracciones a céntimos ni redondea importes.</p></details><details><summary>¿Puedo usarlo para facturas?</summary><p>Puedes copiar el resultado en tus documentos. Comprueba siempre el importe, los separadores y la unidad según los requisitos del documento.</p></details>`,
+    },
+    {
+      name: "Contador de palabras y caracteres", short: "Cuenta palabras, caracteres y líneas", keywords: "contador de palabras contar caracteres letras lineas longitud texto",
+      description: "Comprueba palabras, caracteres y líneas mientras escribes. Admite tildes, todos los idiomas y emoji.",
+      title: "Contador de palabras y caracteres online gratis", meta: "Cuenta palabras, caracteres con y sin espacios y líneas mientras escribes. Funciona con tildes y emoji; tu texto no sale del navegador.",
+      info: "El contador de palabras y caracteres te dice al instante cuántas palabras, caracteres con y sin espacios y líneas tiene tu texto. Es útil al escribir con límite de palabras, redactar descripciones de productos, títulos SEO o publicaciones en redes sociales.",
+      prose: `<h2>¿Cómo funciona el contador de palabras?</h2><p>Pega tu texto en el cuadro <strong>Texto</strong>. Los recuentos se actualizan en directo para que compruebes la longitud de artículos, tareas, descripciones o publicaciones.</p><h2>Reglas de recuento claras</h2><ul><li><strong>Palabras separadas por espacios:</strong> cada grupo separado por espacios, tabuladores o saltos de línea con al menos una letra o cifra cuenta como uno. «Hola mundo muy grande» cuenta 4.</li><li><strong>Caracteres:</strong> caracteres visibles (grafemas Unicode), incluidos espacios y saltos de línea. Un emoji de familia combinado cuenta como 1.</li><li><strong>Caracteres sin espacios:</strong> excluye espacios, tabuladores y saltos de línea.</li><li><strong>Líneas:</strong> según los saltos de línea que escribas; el ajuste automático en pantalla no añade líneas. Un cuadro vacío tiene 0 líneas.</li></ul><p>Las palabras se cuentan por espacios, no mediante análisis lingüístico, por lo que los idiomas sin espacios (como el chino o el japonés) cuentan cada bloque de texto como una palabra. La puntuación o los emoji sueltos no son palabras.</p><h2>Preguntas frecuentes</h2><details><summary>¿Por qué el recuento difiere de Word o de una red social?</summary><p>Cada plataforma separa palabras y cuenta emoji de forma distinta. Usa el contador de la plataforma de destino si debes cumplir un límite concreto.</p></details><details><summary>¿Se guarda mi texto en un servidor?</summary><p>No. El recuento se hace en tu navegador y no se sube nada. El cuadro no se guarda al recargar la página.</p></details>`,
+    },
+    {
+      name: "Crear stickers con fotos", short: "Quita el fondo, añade contorno y exporta PNG", keywords: "crear sticker quitar fondo png contorno recortar transparente",
+      description: "Quita el fondo, añade contorno y texto y exporta en PNG. Convierte tu foto en un sticker desde el navegador.",
+      title: "Crear stickers con fotos online — Quitar fondo, contorno y PNG", meta: "Crea stickers con tus fotos gratis en el navegador. Quita el fondo, añade contornos y texto y descarga PNG con el editor Sticker Canvas.",
+      info: "El creador de stickers convierte una foto en un sticker: quita el fondo en tu dispositivo, añade un contorno blanco, inserta texto y descarga un archivo PNG. Sin instalar apps ni crear cuentas; tu foto no se sube a un servidor para quitar el fondo.",
+      prose: `<h2>Cómo crear un sticker con una foto</h2><ol><li>Pulsa <strong>Abrir creador de stickers</strong> y usa el botón de subida o arrastra una foto al lienzo.</li><li>Selecciona la foto en el lienzo y elige <strong>Remove background</strong> en el panel de edición.</li><li>Ajusta el contorno (Outline), el tamaño o añade texto con la herramienta de texto.</li><li>Usa el botón PNG de la imagen seleccionada para descargar solo el sticker; la descarga del menú del lienzo exporta todo el diseño.</li></ol><h2>Quitar el fondo en tu dispositivo</h2><p>El modelo de imagen se ejecuta en tu navegador. Las fotos no se envían a ninguna API de eliminación de fondo. El primer uso descarga los archivos de procesamiento; el navegador puede guardarlos en caché.</p><p>Las fotos nítidas con el sujeto bien separado del fondo funcionan mejor. El pelo, los objetos transparentes y los fondos recargados pueden dejar bordes o perder detalle. Revisa el resultado antes de descargar.</p><h2>Preguntas frecuentes</h2><details><summary>¿El PNG descargado tiene fondo transparente?</summary><p>Tras quitar el fondo, guardar la imagen seleccionada crea un PNG de sticker. Exportar todo el lienzo incluye el fondo de papel y todos los elementos; las dos exportaciones son distintas.</p></details><details><summary>¿Funciona en el móvil?</summary><p>Sí, la interfaz se adapta a pantallas pequeñas. Quitar el fondo requiere memoria y tiempo; los dispositivos recientes ofrecen mejor experiencia.</p></details><details><summary>¿Crea paquetes de stickers de WhatsApp o Zalo?</summary><p>Por ahora crea y descarga imágenes PNG. Importarlas como paquete depende de las funciones y requisitos de tu app de mensajería.</p></details>`,
+    },
+  ],
+  number: {
+    label: "Convertir números a palabras", input: "Números", result: "Resultado en palabras en vietnamita", placeholder: "Un número por línea, p. ej. 1250000", resultPlaceholder: "El resultado aparecerá aquí…",
+    help: "Hasta 30.000 caracteres, 300 por número. Las líneas vacías se conservan para volver a pegar en Excel.", noscript: "Activa JavaScript para convertir números en tu dispositivo.",
+    groups: [
+      { title: "Formato numérico", choices: [["Vietnamita: 1.234.567,89", "El punto separa los miles; la coma va antes de los decimales."], ["Internacional: 1,234,567.89", "La coma separa los miles; el punto va antes de los decimales."]] },
+      { title: "Unidad al final", choices: [["Đồng (VND)", "Añade «đồng» tras el resultado, para importes."], ["Sin unidad", "Solo lee el número."]] },
+    ],
+    examples: [
+      ["Importe de factura", "Importe en formato vietnamita, con puntos entre miles y la unidad đồng al final."],
+      ["Pegar una columna de Excel", "Un número por línea. Las líneas vacías se conservan para que cada resultado coincida con su celda."],
+      ["Decimal internacional", "Coma entre miles y punto antes de los decimales. Solo el número, sin unidad."],
+    ],
+  },
+  counter: {
+    label: "Contador de texto", input: "Texto", stats: "Estadísticas", placeholder: "Escribe o pega tu texto aquí…", help: "Hasta 100.000 caracteres. Las reglas de recuento se explican abajo.", noscript: "Activa JavaScript para ver el recuento de palabras y caracteres.",
+    labels: { words: "Palabras separadas por espacios", characters: "Caracteres", withoutSpaces: "Caracteres sin espacios", lines: "Líneas" },
+    examples: [
+      ["Saludo con emoji", "Un emoji cuenta como un carácter pero no como una palabra.", "¡Hola mundo! 👋\nLas pequeñas herramientas aligeran el día."],
+      ["Descripción de producto", "Comprueba la longitud de la descripción antes de publicarla en un marketplace.", "Camiseta 100 % algodón, corte holgado y transpirable. Envío en 2–3 días."],
+      ["Título de artículo", "Los títulos SEO deben ser cortos; cuenta caracteres para que no se corten en los resultados de búsqueda.", "Cómo escribir importes en letras correctamente en facturas"],
+    ],
+  },
+  sticker: {
+    label: "Creador de stickers", input: "Imagen de entrada", result: "Resultado", open: "Abrir creador de stickers", editor: "Abrir editor",
+    drop: "Haz clic aquí para abrir el creador de stickers y elige una foto de tu dispositivo o arrástrala al lienzo.",
+    note: "La primera eliminación de fondo descarga un modelo de unos 46 MB. El tiempo depende del dispositivo; el editor está en inglés.",
+  },
+  about: {
+    title: "Acerca de, privacidad y código fuente", description: "Sobre 94 Tools, cómo se procesan tus datos en el navegador y los proyectos de código abierto que usamos.",
+    h1: "Herramientas pequeñas. Código abierto.", lead: "94 Tools reúne utilidades sencillas para resolver tareas diarias directamente en tu navegador.",
+    html: `<h2>Gratis y sin cuenta</h2><p>Todas las herramientas actuales son gratuitas. El sitio se basa en proyectos de código abierto y en funciones estándar del navegador.</p><h2>Tus datos</h2><p>Los textos, números e imágenes se procesan en tu dispositivo y no se envían a un servidor para convertirlos. El editor de stickers guarda tu trabajo en el almacenamiento del navegador para que puedas reabrirlo. En un ordenador compartido, borra los datos del sitio en los ajustes del navegador al terminar.</p><p>El servidor sigue recibiendo solicitudes de páginas, JavaScript y del modelo, con información técnica como tu dirección IP. Esta versión no incluye publicidad ni analítica de terceros.</p><h2>Código abierto y licencias</h2>`,
+    feedback: `<h2>Comentarios y errores</h2><p>Puedes informar de problemas técnicos en <a href="https://github.com/namkiba13/stickerCanvas/issues">GitHub Issues</a>. Usa contenido de ejemplo en lugar de importes o fotos privados.</p>`,
+  },
+  credits: { source: "Código fuente del sitio y de Sticker Canvas", fork: "fork de", license: "Licencia", counter: "Usado como referencia; el contador de este sitio sigue las reglas de espacios y Unicode descritas en la página de la herramienta.", ui: "Interfaz inspirada en", cards: "Reescrita en HTML y CSS estáticos; el fondo de la página de inicio procede de OmniTools. Tarjetas de artículos inspiradas en", font: "Fuente", icons: "Iconos vía", model: "El modelo IS-Net para quitar fondos tiene licencia Apache-2.0. El decodificador HEIC incluye componentes ISC/LGPLv3.", notices: "Avisos de terceros", modelLicense: "Licencia del modelo" },
+  js: { line: "Línea", format: "El número o los separadores no coinciden con el formato elegido.", length: "Cada número admite como máximo 300 caracteres.", errors: "{n} línea(s) por corregir. Revisa el formato numérico en Opciones de la herramienta.", copied: "Copiado.", selected: "Contenido seleccionado. Pulsa Ctrl+C o elige Copiar en el móvil.", segmenter: "Actualiza tu navegador para contar con precisión caracteres Unicode y emoji.", file: "numeros-vietnamita-en-letras.txt" },
+};

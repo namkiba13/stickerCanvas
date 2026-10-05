@@ -35,3 +35,11 @@ test("text counting follows documented whitespace and grapheme rules", () => {
   assert.equal(countText(" \t\n").withoutSpaces, 0);
   assert.equal(countText("xin\tchào\n123").words, 3);
 });
+
+test("every locale has the same keys and translates number errors", async () => {
+  const shape = (o) => Object.entries(o).map(([k, v]) => v && typeof v === "object" && !Array.isArray(v) ? `${k}{${shape(v)}}` : `${k}${Array.isArray(v) ? v.length : ""}`).sort().join();
+  const codes = ["vi", "en", "de", "es", "fr", "pt", "ja", "hi", "nl", "ru", "uk", "zh"];
+  const locales = await Promise.all(codes.map(async (code) => (await import(`../site/locales/${code}.mjs`)).default));
+  for (const locale of locales) assert.equal(shape(locale), shape(locales[0]), locale.htmlLang);
+  assert.equal(readLines("abc", "vn", "", locales[1].js).value, `Line 1: ${locales[1].js.format}`);
+});
