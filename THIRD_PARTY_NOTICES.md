@@ -1,5 +1,18 @@
 # Third-Party Notices
 
+## Vietnamese Number Reader
+
+The portal uses `read-vietnamese-number` 2.4.0, MIT licensed, copyright
+(c) 2025 Vu Tong. Its license is published at
+`/licenses/read-vietnamese-number.txt` in the built site. Source:
+https://github.com/tonghoangvu/read-vietnamese-number-js
+
+## Word Counter Reference
+
+The word-counter fork is retained as a design reference:
+https://github.com/saeedkohansal/JavaScript-Word-Counter-Web-Application
+The portal implements its own documented whitespace/Unicode counting rules.
+
 ## Local Background Removal
 
 Browser-side inference uses `onnxruntime-web`, licensed under the MIT License.
