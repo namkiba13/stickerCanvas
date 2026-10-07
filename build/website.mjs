@@ -86,6 +86,12 @@ function localeSite(code) {
     return `<article class="cat-card"><div class="cat-head">${svg(category.icon, `style="color:${category.color}"`)}<h2><a href="${category.path}">${category.name}</a></h2></div><p>${category.description}</p><div class="cat-actions"><a class="btn contained" href="${category.path}">${t.ui.seeAll(category.name)}</a><a class="btn outlined" href="${first.path}">${t.ui.tryTool(first.name)}</a></div></article>`;
   }
 
+  // Category pages: reuse each tool intro + its guides so the page has indexable text, no extra translations.
+  const categoryAbout = (category) => {
+    const list = tools.filter((tool) => tool.category === category.slug);
+    const guides = ownPosts.filter((post) => list.includes(post.tool));
+    return `<section class="category-about">${list.map((tool) => `<h2><a href="${tool.path}">${t.ui.whatIs(tool.name)}</a></h2><p>${tool.info}</p>`).join("")}</section>${guides.length ? `<section class="home-posts category-posts"><h2 class="title">${b.guides}</h2>${postCards(guides)}</section>` : ""}`;
+  };
   const toolTile = (tool, index) => `<a class="tool-tile" href="${tool.path}" data-keywords="${esc(tool.keywords)}">${svg(tool.icon, `style="color:${colors[index % colors.length]}"`)}<span><span class="tile-name">${tool.name}</span><span class="tile-desc">${tool.short}</span></span></a>`;
   const toolCard = (tool) => `<a class="tool-card" href="${tool.path}"><span class="tool-card-head">${svg(tool.icon)}<strong>${tool.name}</strong>${svg("mdi__chevron-right")}</span><span class="tool-card-desc">${tool.short}</span></a>`;
   const optionsBox = (groups) => `<section class="options" aria-labelledby="options-title"><h2 id="options-title">${svg("mdi__cog")}${t.ui.options}</h2><div class="opt-groups">${optionGroups(groups)}</div></section>`;
@@ -129,7 +135,7 @@ function localeSite(code) {
     }),
     ...Object.values(categories).map((category) => ({
       key: `category:${category.slug}`, path: category.path, bare: true, crumbs: [allTools, { path: category.path, name: category.name }], title: `${t.ui.categoryTitle(category.name)} | 94 Tools`, description: category.description,
-      content: `<div class="hero-wrap">${hero("p")}</div><hr class="divider"><section class="category"><div class="category-bar"><div><h1><a class="back" href="${home}" aria-label="${t.ui.back}">${svg("mdi__arrow-left")}</a>${t.ui.allOf(category.name)}</h1><p>${category.description}</p></div><div class="search small-search"><label class="sr-only" for="category-search">${t.ui.searchIn(category.name)}</label><input id="category-search" type="text" placeholder="${t.ui.searchPlaceholder}" autocomplete="off" spellcheck="false">${svg("mdi__magnify")}</div></div><div class="tile-grid">${tools.filter((tool) => tool.category === category.slug).map(toolTile).join("")}</div><p class="none" id="tile-empty" hidden>${t.ui.noResults}</p></section>`,
+      content: `<div class="hero-wrap">${hero("p")}</div><hr class="divider"><section class="category"><div class="category-bar"><div><h1><a class="back" href="${home}" aria-label="${t.ui.back}">${svg("mdi__arrow-left")}</a>${t.ui.allOf(category.name)}</h1><p>${category.description}</p></div><div class="search small-search"><label class="sr-only" for="category-search">${t.ui.searchIn(category.name)}</label><input id="category-search" type="text" placeholder="${t.ui.searchPlaceholder}" autocomplete="off" spellcheck="false">${svg("mdi__magnify")}</div></div><div class="tile-grid">${tools.filter((tool) => tool.category === category.slug).map(toolTile).join("")}</div><p class="none" id="tile-empty" hidden>${t.ui.noResults}</p></section>${categoryAbout(category)}`,
     })),
     {
       key: "about", path: aboutPath, name: t.ui.about, crumbs: [{ path: home, name: t.ui.home }, { path: aboutPath, name: t.ui.about }], title: `${t.about.title} | 94 Tools`, description: t.about.description,
@@ -146,7 +152,7 @@ function localeSite(code) {
       const related = ownPosts.filter((other) => other !== post).slice(0, 3);
       return {
         key: `post:${post.key}`, path: post.path, crumbs: [{ path: home, name: t.ui.home }, { path: blogPath, name: t.ui.blog }, { path: post.path, name: post.title }], title: `${esc(post.title)} | 94 Tools`, description: esc(post.description), ogType: "article", lastmod: post.updated || post.date,
-        schema: { "@context": "https://schema.org", "@type": "BlogPosting", headline: post.title, description: post.description, datePublished: post.date, dateModified: post.updated || post.date, inLanguage: t.htmlLang, mainEntityOfPage: origin + post.path, author: { "@type": "Organization", name: "94 Tools", url: `${origin}/` }, publisher: { "@type": "Organization", name: "94 Tools" } },
+        schema: { "@context": "https://schema.org", "@type": "BlogPosting", headline: post.title, description: post.description, datePublished: post.date, dateModified: post.updated || post.date, inLanguage: t.htmlLang, mainEntityOfPage: origin + post.path, image: `${origin}/assets/og.png`, author: { "@type": "Organization", name: "94 Tools", url: `${origin}/` }, publisher: { "@type": "Organization", name: "94 Tools" } },
         content: `<div class="post-head"><span class="chip">${post.category}</span><h1>${esc(post.title)}</h1><p class="lead">${esc(post.description)}</p><p class="small">${b.by} <strong>94 Tools</strong> · ${b.updated} <time datetime="${post.updated || post.date}">${date(post.updated || post.date)}</time> · ${b.minutes(post.minutes)}</p></div>${cover(post, true)}<div class="post-layout">${post.toc.length > 2 ? `<nav class="toc" aria-label="${b.toc}"><strong>${b.toc}</strong><ol>${post.toc.map((item) => `<li><a href="#${item.id}">${item.text}</a></li>`).join("")}</ol></nav>` : ""}<article class="prose">${post.body}${tool ? `<div class="tool-cta"><p class="small">${b.cta}</p>${toolCard(tool)}</div>` : ""}</article></div>${related.length ? `<hr class="sep"><section><h2 class="title">${b.related}</h2>${postCards(related)}</section>` : ""}`,
       };
     }),

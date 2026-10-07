@@ -94,6 +94,10 @@ svg { flex:none; }
 .category { margin:24px 0 0 24px; padding:24px; }
 .category-bar { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:24px; }
 .category-bar h1 { display:flex; align-items:center; gap:8px; font-size:22px; color:var(--primary); margin:0; }
+.category-about { max-width:900px; margin:8px 24px 0 48px; }
+.category-about h2 { font-size:22px; margin:24px 0 8px; }
+.category-about p { margin:0; }
+.home-posts.category-posts { width:auto; margin:32px 24px 0 48px; }
 .category-bar p { margin:4px 0 0 48px; color:var(--muted); max-width:760px; }
 .back { display:grid; place-items:center; width:40px; height:40px; border-radius:50%; color:var(--primary); }
 .back:hover { background:rgba(25,118,210,.04); }
@@ -201,7 +205,7 @@ details p { margin:8px 0 0; color:var(--muted); }
 
 footer { display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px 24px; margin-top:24px; padding:24px 40px; border-top:1px solid rgba(0,0,0,.12); font-size:14px; color:var(--muted); }
 footer p { margin:0; }
-footer a { color:var(--muted); }
+footer a { color:var(--muted); display:inline-block; padding:4px 0; }
 
 @media (max-width:1199px) { .hero { width:80%; } .topbar { margin-inline:24px; } }
 @media (max-width:899px) {
@@ -220,6 +224,8 @@ footer a { color:var(--muted); }
   .category { margin:8px 0 0; padding:16px; }
   .category-bar { flex-direction:column; align-items:stretch; }
   .category-bar p { margin-left:0; }
+  .category-about { margin:8px 16px 0; }
+  .home-posts.category-posts { width:auto; margin:32px 16px 0; }
   .small-search { width:100%; }
   .toc { position:static; order:0; }
   footer { padding:24px 16px; }
