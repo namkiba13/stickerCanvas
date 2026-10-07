@@ -33,7 +33,7 @@ export default {
     {
       name: "Criar figurinhas com fotos", short: "Remova o fundo, adicione contorno e exporte PNG", keywords: "criar figurinha sticker remover fundo png contorno recortar transparente",
       description: "Remova o fundo, adicione contorno e texto e exporte em PNG. Transforme sua foto em figurinha direto no navegador.",
-      title: "Criar figurinhas com fotos online — Remover fundo, contorno e PNG", meta: "Crie figurinhas com suas fotos grátis no navegador. Remova o fundo, adicione contornos e texto e baixe em PNG com o editor Sticker Canvas.",
+      title: "Criar figurinhas com fotos online — Remover fundo", meta: "Crie figurinhas com suas fotos grátis no navegador. Remova o fundo, adicione contornos e texto e baixe em PNG com o editor Sticker Canvas.",
       info: "O criador de figurinhas transforma uma foto em figurinha: remove o fundo no seu dispositivo, adiciona contorno branco, insere texto e baixa um arquivo PNG. Sem instalar apps ou criar conta; sua foto não é enviada a um servidor para remover o fundo.",
       prose: `<h2>Como criar uma figurinha com uma foto</h2><ol><li>Clique em <strong>Abrir criador de figurinhas</strong> e use o botão de envio ou arraste uma foto para a tela.</li><li>Selecione a foto na tela e escolha <strong>Remove background</strong> no painel de edição.</li><li>Ajuste o contorno (Outline), o tamanho ou adicione texto com a ferramenta de texto.</li><li>Use o botão PNG da imagem selecionada para baixar só a figurinha; o download do menu da tela exporta todo o layout.</li></ol><h2>Remoção de fundo no seu dispositivo</h2><p>O modelo de imagem roda no navegador. As fotos não são enviadas a nenhuma API de remoção de fundo. O primeiro uso baixa os arquivos de processamento; o navegador pode guardá-los em cache.</p><p>Fotos nítidas, com o objeto bem separado do fundo, funcionam melhor. Cabelos, objetos transparentes e fundos complexos podem deixar bordas ou perder detalhes. Confira o resultado antes de baixar.</p><h2>Perguntas frequentes</h2><details><summary>O PNG baixado tem fundo transparente?</summary><p>Depois de remover o fundo, salvar a imagem selecionada cria um PNG de figurinha. Exportar a tela inteira inclui o fundo de papel e todos os elementos; as duas exportações são diferentes.</p></details><details><summary>Funciona no celular?</summary><p>Sim, a interface se adapta a telas pequenas. A remoção de fundo exige memória e tempo; aparelhos mais novos oferecem uma experiência melhor.</p></details><details><summary>Cria pacotes de figurinhas do WhatsApp ou Zalo?</summary><p>No momento, cria e baixa imagens PNG. Importá-las como pacote depende dos recursos e requisitos do seu app de mensagens.</p></details>`,
     },
@@ -62,7 +62,7 @@ export default {
   },
   sticker: {
     label: "Criador de figurinhas", input: "Imagem de entrada", result: "Resultado", open: "Abrir criador de figurinhas", editor: "Abrir editor",
-    drop: "Clique aqui para abrir o criador de figurinhas e escolha uma foto do dispositivo ou arraste-a para a tela.",
+    drop: "Clique para escolher uma foto ou arraste-a para cá. Ela abre no criador de figurinhas.",
     note: "A primeira remoção de fundo baixa um modelo de cerca de 46 MB. O tempo depende do dispositivo; o editor está em inglês.",
   },
   about: {

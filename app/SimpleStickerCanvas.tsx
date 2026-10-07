@@ -31,6 +31,7 @@ import {
   normalizeCanvasImageCrop,
 } from "@/lib/canvas-types";
 import { removeImageBackground } from "@/lib/background-removal";
+import { takeUpload } from "@/lib/upload-handoff";
 import { getPinchView, type PinchGesture, type PointerSample } from "@/lib/canvas-viewport";
 import { createCanvasTaskScope, type CanvasTask } from "@/lib/canvas-task";
 import {
@@ -438,6 +439,8 @@ export function SimpleStickerCanvas() {
   const [isImporting, setIsImporting] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const [isCreatingCanvas, setIsCreatingCanvas] = useState(false);
+  const [canvasReady, setCanvasReady] = useState(false);
+  const uploadHandoffRef = useRef(false);
   const [canvasProjects, setCanvasProjects] = useState<CanvasProject[]>([]);
   const [activeCanvasId, setActiveCanvasId] = useState<string | null>(null);
   const [historyOpen, setHistoryOpen] = useState(false);
@@ -882,7 +885,10 @@ export function SimpleStickerCanvas() {
           );
         }
       })
-      .catch(() => setNotice("Could not restore canvas"));
+      .catch(() => setNotice("Could not restore canvas"))
+      .finally(() => {
+        if (!disposed) setCanvasReady(true);
+      });
 
     return () => {
       disposed = true;
@@ -1315,6 +1321,15 @@ export function SimpleStickerCanvas() {
     },
     [replaceStickers, selectSticker],
   );
+
+  useEffect(() => {
+    if (!canvasReady || uploadHandoffRef.current || !location.hash.includes("upload")) return;
+    uploadHandoffRef.current = true;
+    history.replaceState(null, "", location.pathname + location.search);
+    void takeUpload()
+      .then((file) => processFile(file))
+      .catch(() => setNotice("Could not load image"));
+  }, [canvasReady, processFile]);
 
   const clearExternalDrag = useCallback(() => {
     externalDragDepthRef.current = 0;

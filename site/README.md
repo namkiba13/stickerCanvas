@@ -35,7 +35,8 @@ native Unicode APIs rather than its original ASCII/UTF-16 assumptions.
 
 - Project: `94 Free Tools` (`c1odckhbtz3wro1lbv0fbjt0`)
 - Application: `94-tools` (`uqjvr9mvf4zqrmcofpqxpsbh`)
-- Temporary URL: `https://uqjvr9mvf4zqrmcofpqxpsbh.66.163.122.150.sslip.io`
+- URL: `https://94chat.app` (Cloudflare proxied, SSL Full). `www` and the old
+  sslip URL return 301 to it from `site/nginx.conf`.
 - Build pack: Dockerfile; port 80; health check `/`.
 - `SITE_URL` is a build-time variable, used for canonical URLs and sitemap.
 - Deployments are triggered manually through Coolify.

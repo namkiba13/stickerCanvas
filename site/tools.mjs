@@ -1,4 +1,5 @@
 import { countText, readLines, searchKey } from "./logic.mjs";
+import { saveUpload } from "../lib/upload-handoff.ts";
 
 const matches = (element, words) => {
   const key = searchKey(`${element.textContent} ${element.dataset.keywords ?? ""}`);
@@ -76,6 +77,36 @@ const result = document.querySelector("#result");
 const copy = document.querySelector("#copy");
 const mode = document.body.dataset.tool;
 const t = JSON.parse(document.querySelector("#i18n")?.textContent ?? "{}");
+
+// Sticker page: pick or drop a photo here, then open the editor with it.
+const drop = document.querySelector("#sticker-drop");
+if (drop) {
+  const picker = document.querySelector("#sticker-file");
+  const open = async (file) => {
+    if (!file) return;
+    try {
+      await saveUpload(file);
+      location.href = `${drop.href}#upload`;
+    } catch {
+      location.href = drop.href;
+    }
+  };
+  drop.addEventListener("click", (event) => {
+    event.preventDefault();
+    picker.click();
+  });
+  picker.addEventListener("change", () => open(picker.files[0]));
+  drop.addEventListener("dragover", (event) => {
+    event.preventDefault();
+    drop.classList.add("over");
+  });
+  drop.addEventListener("dragleave", () => drop.classList.remove("over"));
+  drop.addEventListener("drop", (event) => {
+    event.preventDefault();
+    drop.classList.remove("over");
+    open([...event.dataTransfer.files].find((file) => file.type.startsWith("image/") || /\.(heic|heif)$/i.test(file.name)));
+  });
+}
 const option = (name) => document.querySelector(`input[name="${name}"]:checked`)?.value ?? "";
 
 function update() {

@@ -62,7 +62,7 @@ export default {
   },
   sticker: {
     label: "Tạo sticker", input: "Ảnh đầu vào", result: "Kết quả", open: "Mở trình tạo sticker", editor: "Mở trình chỉnh sửa",
-    drop: "Bấm vào đây để mở trình tạo sticker, rồi chọn ảnh từ thiết bị hoặc kéo thả ảnh vào canvas.",
+    drop: "Bấm để chọn ảnh hoặc kéo thả ảnh vào đây. Ảnh sẽ mở trong trình tạo sticker.",
     note: "Lần đầu xóa nền cần tải model khoảng 46 MB. Thời gian xử lý tùy thiết bị; trình chỉnh sửa hiện dùng giao diện tiếng Anh.",
   },
   about: {
