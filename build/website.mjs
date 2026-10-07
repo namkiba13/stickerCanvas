@@ -71,7 +71,10 @@ function localeSite(code) {
   const allTools = { path: home, name: t.ui.allTools };
 
   const cover = (post, large = false) => `<div class="cover${large ? " cover-lg" : ""}">${svg(post.tool?.icon ?? "mdi__file-document-edit-outline", `style="color:${post.tool?.color ?? colors[4]}"`)}</div>`;
-  const postCards = (list) => `<div class="grid-3">${list.map((post) => `<a class="post-card" href="${post.path}">${cover(post)}<div class="post-body"><span class="chip">${post.category}</span><h3>${esc(post.title)}</h3><p>${esc(post.description)}</p><span class="small"><time datetime="${post.date}">${date(post.date)}</time> · ${b.minutes(post.minutes)}</span></div></a>`).join("")}</div>`;
+  const postCard = (post) => `<a class="post-card" href="${post.path}">${cover(post)}<div class="post-body"><span class="chip">${post.category}</span><h3>${esc(post.title)}</h3><p>${esc(post.description)}</p><span class="small"><time datetime="${post.date}">${date(post.date)}</time> · ${b.minutes(post.minutes)}</span></div></a>`;
+  const postCards = (list) => `<div class="grid-3">${list.map(postCard).join("")}</div>`;
+  const arrow = (dir) => `<button class="slide-btn ${dir}" type="button" aria-label="${b[dir]}" aria-controls="post-track" hidden>${svg("mdi__chevron-right")}</button>`;
+  const postSlider = (list) => `<div class="slider" aria-roledescription="carousel">${arrow("prev")}<div class="slide-track" id="post-track">${list.map(postCard).join("")}</div>${arrow("next")}</div>`;
 
   function hero(heading = "h1") {
     const groups = Object.values(categories).map((category) => `<div role="group" aria-labelledby="group-${category.slug}"><div class="group" id="group-${category.slug}">${category.name}</div>${tools.filter((tool) => tool.category === category.slug).map((tool) => `<a role="option" tabindex="-1" id="option-${tools.indexOf(tool)}" href="${tool.path}" data-keywords="${esc(tool.keywords)}" aria-selected="false">${svg(tool.icon)}<span><strong>${tool.name}</strong><small>${tool.short}</small></span></a>`).join("")}</div>`).join("");
@@ -109,7 +112,7 @@ function localeSite(code) {
     {
       key: "home", path: home, bare: true, title: t.site.title, description: t.site.description,
       schema: { "@context": "https://schema.org", "@type": "WebSite", name: "94 Tools", url: origin + home, inLanguage: t.htmlLang, description: t.site.description },
-      content: `<div class="home">${hero()}<section class="categories" id="cong-cu" aria-label="${t.ui.categories}">${Object.values(categories).map(categoryCard).join("")}</section>${ownPosts.length ? `<section class="home-posts"><div class="section-head"><h2 class="title">${b.h1}</h2><a href="${blogPath}">${b.all}</a></div>${postCards(ownPosts.slice(0, 3))}</section>` : ""}</div>`,
+      content: `<div class="home">${hero()}<section class="categories" id="cong-cu" aria-label="${t.ui.categories}">${Object.values(categories).map(categoryCard).join("")}</section>${ownPosts.length ? `<section class="home-posts"><div class="section-head"><h2 class="title">${b.h1}</h2><a href="${blogPath}">${b.all}</a></div>${postSlider(ownPosts.slice(0, 9))}</section>` : ""}</div>`,
     },
     toolPage(0, {
       groups: numberGroups,

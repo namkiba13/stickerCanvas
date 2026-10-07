@@ -72,6 +72,6 @@ export default {
     feedback: `<h2>反馈与问题报告</h2><p>你可以通过 <a href="https://github.com/namkiba13/stickerCanvas/issues">GitHub Issues</a> 报告技术问题。请使用示例内容，而不是私人金额或照片。</p>`,
   },
   credits: { source: "网站与 Sticker Canvas 源代码", fork: "派生自", license: "许可证", counter: "作为参考；本站计数器遵循工具页面中说明的空白和 Unicode 规则。", ui: "界面参考", cards: "以静态 HTML 和 CSS 重写；首页背景图来自 OmniTools。文章卡片参考", font: "字体", icons: "图标来自", model: "IS-Net 去背景模型采用 Apache-2.0 许可证。HEIC 解码器包含 ISC/LGPLv3 组件。", notices: "第三方组件声明", modelLicense: "模型许可证" },
-  blog: { title: "94 Tools 博客 — 日常工作的指南与技巧", description: "介绍越南语金额文字写法、SEO 与社交媒体的字数限制、用照片制作贴纸等免费在线工具的使用指南与技巧。", h1: "指南与技巧", lead: "简短实用的知识，适用于办公、写作和创意项目。", all: "查看全部文章", guides: "指南", by: "作者：", updated: "更新于", toc: "目录", cta: "免费工具，立即使用", related: "相关文章", minutes: (n) => `阅读约 ${n} 分钟` },
+  blog: { title: "94 Tools 博客 — 日常工作的指南与技巧", description: "介绍越南语金额文字写法、SEO 与社交媒体的字数限制、用照片制作贴纸等免费在线工具的使用指南与技巧。", h1: "指南与技巧", lead: "简短实用的知识，适用于办公、写作和创意项目。", all: "查看全部文章", guides: "指南", by: "作者：", updated: "更新于", toc: "目录", cta: "免费工具，立即使用", related: "相关文章", prev: "上一篇", next: "下一篇", minutes: (n) => `阅读约 ${n} 分钟` },
   js: { line: "行", format: "数字或分隔符与所选格式不符。", length: "每个数字最多 300 个字符。", errors: "有 {n} 行需要修改。请在工具选项中检查数字格式。", copied: "已复制。", selected: "已选中内容。请按 Ctrl+C，或在手机上选择复制。", segmenter: "请更新浏览器，以便准确统计 Unicode 字符和表情。", file: "vietnamese-number-words.txt" },
 };

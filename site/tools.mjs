@@ -187,3 +187,38 @@ if (input) {
   }
   update();
 }
+
+// Home post slider: native scroll-snap (touch swipe for free), cloned cards for an endless loop, autoplay.
+const track = document.querySelector(".slide-track");
+const cards = track ? [...track.children] : [];
+if (cards.length > 1) {
+  const [prev, next] = track.parentElement.querySelectorAll(".slide-btn");
+  for (const card of cards) {
+    const clone = card.cloneNode(true);
+    clone.setAttribute("aria-hidden", "true");
+    clone.tabIndex = -1;
+    track.append(clone);
+  }
+  const step = () => cards[1].offsetLeft - cards[0].offsetLeft;
+  const loop = () => step() * cards.length;
+  const jump = (left) => track.scrollTo({ left, behavior: "instant" });
+  const go = (dir) => {
+    if (dir < 0 && track.scrollLeft < step() / 2) jump(track.scrollLeft + loop());
+    track.scrollBy({ left: dir * step(), behavior: "smooth" });
+  };
+  let settle;
+  track.addEventListener("scroll", () => {
+    clearTimeout(settle);
+    settle = setTimeout(() => track.scrollLeft >= loop() - 2 && jump(track.scrollLeft - loop()), 150);
+  });
+  prev.hidden = next.hidden = false;
+  prev.addEventListener("click", () => go(-1));
+  next.addEventListener("click", () => go(1));
+  let paused = false;
+  const slider = track.parentElement;
+  slider.addEventListener("pointerenter", () => (paused = true));
+  slider.addEventListener("pointerleave", () => (paused = false));
+  slider.addEventListener("focusin", () => (paused = true));
+  slider.addEventListener("focusout", () => (paused = false));
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) setInterval(() => paused || document.hidden || go(1), 4000);
+}
