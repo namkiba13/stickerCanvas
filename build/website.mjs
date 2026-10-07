@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { cp, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import { resolve } from "node:path";
 import { build } from "vite";
 import { countText, readLines, searchKey } from "../site/logic.mjs";
@@ -50,6 +51,7 @@ const numberInputs = [["1.250.000", "vn", "đồng"], ["1250000\n15005\n\n250000
 
 // page.key ties the same page across locales: alternates[key][code] = path, used for hreflang, the sitemap and the language menu.
 const alternates = {};
+const version = {};
 
 function localeSite(code) {
   const t = locales[code];
@@ -150,7 +152,7 @@ function localeSite(code) {
     const inTools = /^(tool|category):/.test(page.key ?? "");
     const nav = [[`${home}#cong-cu`, t.ui.tools, inTools], ["/blog/", t.ui.blog, page.path.startsWith("/blog/")], [aboutPath, t.ui.about, page.path === aboutPath]].map(([href, label, current]) => `<a href="${href}"${current ? ' aria-current="page"' : ""}${href === "/blog/" && code !== "vi" ? ' hreflang="vi"' : ""}>${label}</a>`).join("");
     const languages = `<label class="lang">${svg("mdi__translate")}<span class="sr-only">${t.ui.language}</span><select onchange="location.href=this.value">${codes.map((other) => `<option value="${alts[other] ?? `${prefix(other)}/`}" lang="${locales[other].htmlLang}"${other === code ? " selected" : ""}>${locales[other].label}</option>`).join("")}</select></label>`;
-    return `<!doctype html><html lang="${t.htmlLang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#F5F5FA"><title>${page.title}</title><meta name="description" content="${page.description}">${page.noindex ? '<meta name="robots" content="noindex,follow">' : `<link rel="canonical" href="${origin}${page.path}"><meta property="og:url" content="${origin}${page.path}">`}${hreflang}<meta property="og:type" content="${page.ogType || "website"}"><meta property="og:locale" content="${t.ogLocale}"><meta property="og:title" content="${page.title}"><meta property="og:description" content="${page.description}"><meta property="og:image" content="${origin}/assets/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preload" href="/assets/Quicksand-VariableFont_wght.ttf" as="font" type="font/ttf" crossorigin><link rel="stylesheet" href="/style.css">${schemas.map((schema) => `<script type="application/ld+json">${json(schema)}</script>`).join("")}${page.mode || page.bare ? '<script type="module" src="/tools.js"></script>' : ""}${page.mode ? `<script type="application/json" id="i18n">${json(t.js)}</script>` : ""}</head><body data-tool="${page.mode || ""}"${page.key === "home" ? ' class="home-bg"' : ""}><a class="skip" href="#main">${t.ui.skip}</a><header class="topbar"><a class="logo" href="${home}" aria-label="94 Tools — ${t.ui.home}">94 Tools</a><nav aria-label="${t.ui.menu}">${nav}${languages}</nav></header><main id="main"${page.bare ? "" : ' class="page"'}>${page.bare ? "" : crumbNav(crumbs)}${page.content}</main><footer><p><strong>94 Tools</strong> · ${t.site.tagline}</p><p>${tools.map((tool) => link(tool.path, tool.name)).join(" · ")}</p><p>${Object.values(categories).map((category) => link(category.path, category.name)).join(" · ")} · ${link("/blog/", t.ui.blog)} · ${link(aboutPath, t.ui.aboutFooter)}</p></footer></body></html>`;
+    return `<!doctype html><html lang="${t.htmlLang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#F5F5FA"><title>${page.title}</title><meta name="description" content="${page.description}">${page.noindex ? '<meta name="robots" content="noindex,follow">' : `<link rel="canonical" href="${origin}${page.path}"><meta property="og:url" content="${origin}${page.path}">`}${hreflang}<meta property="og:type" content="${page.ogType || "website"}"><meta property="og:locale" content="${t.ogLocale}"><meta property="og:title" content="${page.title}"><meta property="og:description" content="${page.description}"><meta property="og:image" content="${origin}/assets/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preload" href="/assets/Quicksand-VariableFont_wght.ttf" as="font" type="font/ttf" crossorigin><link rel="stylesheet" href="/style.css?v=${version.css}">${schemas.map((schema) => `<script type="application/ld+json">${json(schema)}</script>`).join("")}${page.mode || page.bare ? `<script type="module" src="/tools.js?v=${version.js}"></script>` : ""}${page.mode ? `<script type="application/json" id="i18n">${json(t.js)}</script>` : ""}</head><body data-tool="${page.mode || ""}"${page.key === "home" ? ' class="home-bg"' : ""}><a class="skip" href="#main">${t.ui.skip}</a><header class="topbar"><a class="logo" href="${home}" aria-label="94 Tools — ${t.ui.home}">94 Tools</a><nav aria-label="${t.ui.menu}">${nav}${languages}</nav></header><main id="main"${page.bare ? "" : ' class="page"'}>${page.bare ? "" : crumbNav(crumbs)}${page.content}</main><footer><p><strong>94 Tools</strong> · ${t.site.tagline}</p><p>${tools.map((tool) => link(tool.path, tool.name)).join(" · ")}</p><p>${Object.values(categories).map((category) => link(category.path, category.name)).join(" · ")} · ${link("/blog/", t.ui.blog)} · ${link(aboutPath, t.ui.aboutFooter)}</p></footer></body></html>`;
   }
   return { pages, render };
 }
@@ -167,6 +169,10 @@ await build({
   },
 });
 await cp("site/style.css", `${output}/style.css`);
+// Cache-busting query so CDN/browser caches pick up each deploy.
+const hash = async (file) => createHash("sha256").update(await readFile(file)).digest("hex").slice(0, 8);
+version.css = await hash(`${output}/style.css`);
+version.js = await hash(`${output}/tools.js`);
 await cp("site/assets", `${output}/assets`, { recursive: true });
 await mkdir(`${output}/sticker-maker/editor`, { recursive: true });
 await cp("dist", `${output}/sticker-maker/editor`, { recursive: true, filter: (path) => !path.includes(".openai") });
