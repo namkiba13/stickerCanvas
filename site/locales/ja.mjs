@@ -2,7 +2,7 @@ export default {
   label: "日本語", htmlLang: "ja", ogLocale: "ja_JP",
   site: { title: "94 Tools — すぐ使える無料オンラインツール", description: "数字をベトナム語の文字に変換、単語数・文字数のカウント、写真からステッカー作成。アカウント不要の無料ツールで、処理はすべてブラウザ内で行われます。", tagline: "毎日使える便利ツール、無料。" },
   ui: {
-    skip: "メインコンテンツへスキップ", menu: "メインメニュー", language: "言語", home: "ホーム", allTools: "すべてのツール", tools: "ツール", blog: "ブログ（ベトナム語）", about: "概要", aboutFooter: "概要 · プライバシー · ソースコード",
+    skip: "メインコンテンツへスキップ", menu: "メインメニュー", language: "言語", home: "ホーム", allTools: "すべてのツール", tools: "ツール", blog: "ブログ", about: "概要", aboutFooter: "概要 · プライバシー · ソースコード",
     heroTitle: (b) => `${b}ですばやく作業を完了`, heroDesc: "94 Tools で作業効率アップ！すばやく作業を終えるための無料オンラインツール集です。数字の文字変換、単語カウント、写真からのステッカー作成など、すべてブラウザ上で処理します。",
     search: "ツールを検索", searchPlaceholder: "すべてのツールを検索", noResults: "結果がありません", categories: "ツールのカテゴリー",
     seeAll: (c) => `${c}をすべて見る`, tryTool: (t) => `${t}を試す`, allOf: (c) => `すべての${c}`, searchIn: (c) => `${c}を検索`, back: "ホームに戻る", categoryTitle: (c) => `無料オンライン${c}`,
@@ -72,5 +72,6 @@ export default {
     feedback: `<h2>ご意見・不具合の報告</h2><p>技術的な問題は <a href="https://github.com/namkiba13/stickerCanvas/issues">GitHub Issues</a> から報告できます。個人的な金額や写真ではなく、サンプルの内容を使ってください。</p>`,
   },
   credits: { source: "サイトと Sticker Canvas のソースコード", fork: "フォーク元:", license: "ライセンス", counter: "参考として使用。このサイトのカウンターはツールページに記載した空白と Unicode のルールに従います。", ui: "インターフェースの参考:", cards: "静的な HTML と CSS で書き直し、トップページの背景画像は OmniTools のものです。記事カードの参考:", font: "フォント", icons: "アイコン提供:", model: "背景削除モデル IS-Net は Apache-2.0 ライセンスです。HEIC デコーダーには ISC/LGPLv3 のコンポーネントが含まれます。", notices: "サードパーティーの表記", modelLicense: "モデルのライセンス" },
+  blog: { title: "94 Tools ブログ — 毎日の作業に役立つガイドとコツ", description: "ベトナム語での金額表記、SEOやSNSの文字数制限、写真からステッカーを作る方法など、無料オンラインツールの使い方とコツを紹介します。", h1: "ガイドとコツ", lead: "事務作業、文章作成、クリエイティブ制作にすぐ役立つ短く実用的な知識。", all: "すべての記事を見る", guides: "ガイド", by: "著者:", updated: "更新:", toc: "目次", cta: "すぐ使える無料ツール", related: "関連記事", minutes: (n) => `${n}分で読めます` },
   js: { line: "行", format: "数字または区切り文字が選択した形式と一致しません。", length: "数字は1つにつき最大 300 文字です。", errors: "{n} 行に修正が必要です。ツールのオプションで数字の形式を確認してください。", copied: "コピーしました。", selected: "内容を選択しました。Ctrl+C を押すか、スマートフォンではコピーを選んでください。", segmenter: "Unicode 文字や絵文字を正確に数えるには、ブラウザを更新してください。", file: "vietnamese-number-words.txt" },
 };

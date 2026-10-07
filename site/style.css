@@ -198,7 +198,7 @@ footer a { color:var(--muted); }
   .topbar nav { flex-wrap:wrap; gap:4px 16px; font-size:14px; }
   .home,.hero-wrap { padding:16px 8px; }
   .hero,.categories,.home-posts { width:100%; }
-  .categories,.io,.post-layout { grid-template-columns:1fr; }
+  .categories,.io,.post-layout { grid-template-columns:minmax(0,1fr); }
   .tile-grid,.grid-3,.opt-groups { grid-template-columns:repeat(2,1fr); }
   .tool-art { display:none; }
   .page { width:auto; margin:0 16px; }
