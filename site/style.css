@@ -1,4 +1,4 @@
-/* Visual design follows OmniTools (MIT) – see /gioi-thieu/. Values mirror its MUI theme. */
+/* Visual design follows OmniTools (MIT) – see /about/. Values mirror its MUI theme. */
 @font-face { font-family:"Quicksand"; font-weight:100 900; font-style:normal; font-display:swap; src:url("/assets/Quicksand-VariableFont_wght.ttf") format("truetype"); }
 :root { color-scheme:light; --bg:#F5F5FA; --hover:#FAFAFD; --light:#EBF5FF; --dark:#5581b5; --primary:#1976d2; --link:#1c76ce; --ink:rgba(0,0,0,.87); --muted:rgba(0,0,0,.6); --line:rgba(0,0,0,.23); --shadow1:0 2px 1px -1px rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 1px 3px 0 rgba(0,0,0,.12); font-family:"Quicksand",system-ui,sans-serif; color:var(--ink); background:var(--bg); }
 * { box-sizing:border-box; }

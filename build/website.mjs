@@ -6,15 +6,15 @@ import { countText, readLines, searchKey } from "../site/logic.mjs";
 
 const origin = new URL(process.env.SITE_URL || "http://localhost:4321").origin;
 const output = resolve("dist-site");
-// Iconify SVGs in site/icons (licenses on /gioi-thieu/); colors follow OmniTools' category palette.
+// Iconify SVGs in site/icons (licenses on /about/); colors follow OmniTools' category palette.
 const colors = ["#8FBC5D", "#3CB6E2", "#B17F59", "#FFD400", "#AB6993"];
 const svg = (name, attrs = "") => readFileSync(`site/icons/${name}.svg`, "utf8").replace(' width="1em" height="1em"', ` aria-hidden="true" focusable="false" ${attrs}`);
 // Vietnamese is the default locale at the root with Vietnamese slugs; the other locales (OmniTools' list) live under /<code>/ with English slugs.
 const codes = ["vi", "en", "de", "es", "fr", "pt", "ja", "hi", "nl", "ru", "uk", "zh"];
 const locales = Object.fromEntries(await Promise.all(codes.map(async (code) => [code, (await import(`../site/locales/${code}.mjs`)).default])));
 const prefix = (code) => code === "vi" ? "" : `/${code}`;
-const categoryData = [["so", "number", "lsicon__number-filled"], ["van-ban", "text", "solar__text-bold-duotone"], ["hinh-anh", "image", "material-symbols-light__image-outline-rounded"]];
-const toolData = [["doi-so-thanh-chu", "vietnamese-number-to-words", "fluent__text-number-format-24-regular", 0, "number"], ["dem-tu", "word-counter", "fluent__document-landscape-data-24-filled", 1, "counter"], ["tao-sticker", "sticker-maker", "mdi__image-remove", 2, "sticker"]];
+const categoryData = [["number", "lsicon__number-filled"], ["text", "solar__text-bold-duotone"], ["image", "material-symbols-light__image-outline-rounded"]];
+const toolData = [["vietnamese-number-to-words", "fluent__text-number-format-24-regular", 0, "number"], ["word-counter", "fluent__document-landscape-data-24-filled", 1, "counter"], ["sticker-maker", "mdi__image-remove", 2, "sticker"]];
 
 const esc = (text) => text.replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll("<", "&lt;");
 const json = (data) => JSON.stringify(data).replaceAll("<", "\\u003c");
@@ -34,12 +34,12 @@ const posts = await Promise.all((await readdir("content/blog")).filter((file) =>
     return `<h2 id="${id}">${inner}</h2>`;
   });
   const words = body.replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length;
-  return { ...meta, slug: file.slice(0, -5), body: html, toc, toolIndex, category: toolIndex < 0 ? "Hướng dẫn" : locales.vi.categories[toolData[toolIndex][3]].name, minutes: Math.max(1, Math.round(words / 200)) };
+  return { ...meta, slug: file.slice(0, -5), body: html, toc, toolIndex, category: toolIndex < 0 ? "Hướng dẫn" : locales.vi.categories[toolData[toolIndex][2]].name, minutes: Math.max(1, Math.round(words / 200)) };
 }));
 posts.sort((a, b) => b.date.localeCompare(a.date));
 
 const link = (href, text) => `<a href="${href}">${text}</a>`;
-const credits = (c) => `<ul><li>${link("https://github.com/namkiba13/stickerCanvas/tree/site/free-tools", c.source)} — ${c.fork} ${link("https://github.com/jonbrown66/stickerCanvas", "jonbrown66/stickerCanvas")}, MIT. ${link("/licenses/stickerCanvas.txt", c.license)}.</li><li>${link("https://github.com/namkiba13/read-vietnamese-number-js", "read-vietnamese-number")} — Vu Tong, MIT, 2.4.0. ${link("/licenses/read-vietnamese-number.txt", c.license)}.</li><li>${link("https://github.com/namkiba13/JavaScript-Word-Counter-Web-Application", "JavaScript Word Counter Web Application")} — Saeed Kohansal, MIT. ${c.counter}</li><li>${c.ui} ${link("https://github.com/iib0011/omni-tools", "OmniTools")} — Ibrahima Gaye Coulibaly, MIT (${link("/assets/omni-tools-LICENSE.txt", c.license)}). ${c.cards} ${link("https://github.com/themesberg/flowbite", "Flowbite")} (MIT).</li><li>${c.font} ${link("https://github.com/andrew-paglinawan/QuicksandFamily", "Quicksand")} — SIL Open Font License 1.1 (${link("/assets/Quicksand-OFL.txt", c.license)}).</li><li>${c.icons} ${link("https://iconify.design/", "Iconify")}: ${link("https://github.com/Templarian/MaterialDesign", "Material Design Icons")} (Pictogrammers), ${link("https://github.com/material-icons/material-icons", "Google Material Icons")}, ${link("https://github.com/google/material-design-icons", "Material Symbols")} (Apache-2.0); ${link("https://github.com/microsoft/fluentui-system-icons", "Fluent UI System Icons")} (Microsoft), ${link("https://www.lsicon.com/", "Lsicon")} (Wis Design, MIT); ${link("https://www.figma.com/community/file/1166831539721848736", "Solar")} (480 Design, ${link("https://creativecommons.org/licenses/by/4.0/", "CC BY 4.0")}).</li></ul><p>${c.model} ${link("/licenses/THIRD_PARTY_NOTICES.md", c.notices)} · ${link("/tao-sticker/editor/models/isnet-general-use-onnx/LICENSE", c.modelLicense)}.</p>`;
+const credits = (c) => `<ul><li>${link("https://github.com/namkiba13/stickerCanvas/tree/site/free-tools", c.source)} — ${c.fork} ${link("https://github.com/jonbrown66/stickerCanvas", "jonbrown66/stickerCanvas")}, MIT. ${link("/licenses/stickerCanvas.txt", c.license)}.</li><li>${link("https://github.com/namkiba13/read-vietnamese-number-js", "read-vietnamese-number")} — Vu Tong, MIT, 2.4.0. ${link("/licenses/read-vietnamese-number.txt", c.license)}.</li><li>${link("https://github.com/namkiba13/JavaScript-Word-Counter-Web-Application", "JavaScript Word Counter Web Application")} — Saeed Kohansal, MIT. ${c.counter}</li><li>${c.ui} ${link("https://github.com/iib0011/omni-tools", "OmniTools")} — Ibrahima Gaye Coulibaly, MIT (${link("/assets/omni-tools-LICENSE.txt", c.license)}). ${c.cards} ${link("https://github.com/themesberg/flowbite", "Flowbite")} (MIT).</li><li>${c.font} ${link("https://github.com/andrew-paglinawan/QuicksandFamily", "Quicksand")} — SIL Open Font License 1.1 (${link("/assets/Quicksand-OFL.txt", c.license)}).</li><li>${c.icons} ${link("https://iconify.design/", "Iconify")}: ${link("https://github.com/Templarian/MaterialDesign", "Material Design Icons")} (Pictogrammers), ${link("https://github.com/material-icons/material-icons", "Google Material Icons")}, ${link("https://github.com/google/material-design-icons", "Material Symbols")} (Apache-2.0); ${link("https://github.com/microsoft/fluentui-system-icons", "Fluent UI System Icons")} (Microsoft), ${link("https://www.lsicon.com/", "Lsicon")} (Wis Design, MIT); ${link("https://www.figma.com/community/file/1166831539721848736", "Solar")} (480 Design, ${link("https://creativecommons.org/licenses/by/4.0/", "CC BY 4.0")}).</li></ul><p>${c.model} ${link("/licenses/THIRD_PARTY_NOTICES.md", c.notices)} · ${link("/sticker-maker/editor/models/isnet-general-use-onnx/LICENSE", c.modelLicense)}.</p>`;
 
 const crumbNav = (crumbs) => !crumbs.length ? "" : `<nav class="crumbs" aria-label="Breadcrumb"><ol>${crumbs.map((crumb, index) => index < crumbs.length - 1 ? `<li><a href="${crumb.path}">${esc(crumb.name)}</a></li>` : `<li aria-current="page">${esc(crumb.name)}</li>`).join("")}</ol></nav>`;
 // Option groups render both the live tool options and the read-only state of each example card.
@@ -54,10 +54,10 @@ const alternates = {};
 function localeSite(code) {
   const t = locales[code];
   const home = `${prefix(code)}/`;
-  const path = (vi, intl) => `${prefix(code)}/${code === "vi" ? vi : intl}/`;
-  const categories = Object.fromEntries(categoryData.map(([vi, intl, icon], index) => [vi, { ...t.categories[index], slug: vi, icon, path: path(`cong-cu/${vi}`, `tools/${intl}`), color: colors[index % colors.length] }]));
-  const tools = toolData.map(([vi, intl, icon, category, mode], index) => ({ ...t.tools[index], path: path(vi, intl), icon, category: categoryData[category][0], mode, color: colors[index % colors.length] }));
-  const aboutPath = path("gioi-thieu", "about");
+  const path = (slug) => `${prefix(code)}/${slug}/`;
+  const categories = Object.fromEntries(categoryData.map(([slug, icon], index) => [slug, { ...t.categories[index], slug, icon, path: path(`tools/${slug}`), color: colors[index % colors.length] }]));
+  const tools = toolData.map(([slug, icon, category, mode], index) => ({ ...t.tools[index], path: path(slug), icon, category: categoryData[category][0], mode, color: colors[index % colors.length] }));
+  const aboutPath = path("about");
   const quickLinks = t.quick.map((label, index) => [label, tools[index % tools.length]]);
   const ownPosts = code === "vi" ? posts.map((post) => ({ ...post, tool: tools[post.toolIndex] })) : [];
   const allTools = { path: home, name: t.ui.allTools };
@@ -113,8 +113,8 @@ function localeSite(code) {
       examples: c.examples.map(([title, description, input]) => ({ title, description, input, result: Object.entries(countText(input)).map(([key, value]) => `${c.labels[key]}: ${value}`).join("\n") })),
     }),
     toolPage(2, {
-      links: `<a class="btn outlined paper" href="/tao-sticker/editor/">${s.open}</a>`,
-      ui: `<section class="io" id="tool" aria-label="${s.label}"><div><h2 class="io-title">${s.input}</h2><a class="drop" id="sticker-drop" href="/tao-sticker/editor/">${svg("mdi__publish")}<span>${s.drop}</span></a><input type="file" id="sticker-file" accept="image/*,.heic,.heif" hidden><div class="io-foot"><a class="btn text" href="/tao-sticker/editor/">${svg("mdi__file-document-edit-outline")}${s.editor}</a></div></div><div><h2 class="io-title">${s.result}</h2><div class="drop demo" aria-hidden="true"><span>✦</span></div><p class="opt-desc">${s.note}</p></div></section>`,
+      links: `<a class="btn outlined paper" href="/sticker-maker/editor/">${s.open}</a>`,
+      ui: `<section class="io" id="tool" aria-label="${s.label}"><div><h2 class="io-title">${s.input}</h2><a class="drop" id="sticker-drop" href="/sticker-maker/editor/">${svg("mdi__publish")}<span>${s.drop}</span></a><input type="file" id="sticker-file" accept="image/*,.heic,.heif" hidden><div class="io-foot"><a class="btn text" href="/sticker-maker/editor/">${svg("mdi__file-document-edit-outline")}${s.editor}</a></div></div><div><h2 class="io-title">${s.result}</h2><div class="drop demo" aria-hidden="true"><span>✦</span></div><p class="opt-desc">${s.note}</p></div></section>`,
     }),
     ...Object.values(categories).map((category) => ({
       key: `category:${category.slug}`, path: category.path, bare: true, crumbs: [allTools, { path: category.path, name: category.name }], title: `${t.ui.categoryTitle(category.name)} | 94 Tools`, description: category.description,
@@ -168,11 +168,11 @@ await build({
 });
 await cp("site/style.css", `${output}/style.css`);
 await cp("site/assets", `${output}/assets`, { recursive: true });
-await mkdir(`${output}/tao-sticker/editor`, { recursive: true });
-await cp("dist", `${output}/tao-sticker/editor`, { recursive: true, filter: (path) => !path.includes(".openai") });
-const editorFile = `${output}/tao-sticker/editor/index.html`;
+await mkdir(`${output}/sticker-maker/editor`, { recursive: true });
+await cp("dist", `${output}/sticker-maker/editor`, { recursive: true, filter: (path) => !path.includes(".openai") });
+const editorFile = `${output}/sticker-maker/editor/index.html`;
 const editor = await readFile(editorFile, "utf8");
-await writeFile(editorFile, editor.replace("<title>Sticker Canvas</title>", '<title>Sticker Canvas | 94 Tools</title><meta name="robots" content="noindex,follow">').replace('<div id="root"></div>', '<a href="/tao-sticker/" style="position:fixed;top:18px;left:72px;z-index:100;padding:8px 12px;border-radius:8px;background:#fff;color:#1c76ce;font:14px system-ui;text-decoration:none">← 94 Tools</a><div id="root"></div>'));
+await writeFile(editorFile, editor.replace("<title>Sticker Canvas</title>", '<title>Sticker Canvas | 94 Tools</title><meta name="robots" content="noindex,follow">').replace('<div id="root"></div>', '<a href="/sticker-maker/" style="position:fixed;top:18px;left:72px;z-index:100;padding:8px 12px;border-radius:8px;background:#fff;color:#1c76ce;font:14px system-ui;text-decoration:none">← 94 Tools</a><div id="root"></div>'));
 for (const { pages, render } of sites) {
   for (const page of pages) {
     await mkdir(output + page.path, { recursive: true });
